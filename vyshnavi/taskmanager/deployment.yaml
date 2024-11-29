@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notes-app
+spec:
+  replicas: 2  # Adjust the number of replicas as needed
+  selector:
+    matchLabels:
+      app: notes-app
+  template:
+    metadata:
+      labels:
+        app: notes-app
+    spec:
+      containers:
+      - name: notes-app
+        image: vyshnavinerella25/v4:n4  # Replace with your Docker image name
+        ports:
+        - containerPort: 8080
+        env:
+        - name: FLASK_ENV
+          value: "production"
+        volumeMounts:
+        - name: db-storage
+          mountPath: /app/notes.db  # Mount notes.db inside the container
+      volumes:
+      - name: db-storage
+        emptyDir: {}  # EmptyDir is a temporary volume that gets cleared when the pod restarts
